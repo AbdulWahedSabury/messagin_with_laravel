@@ -27,53 +27,86 @@
                     <div class="title">
                         <h5>Add New Appointment</h5>
                     </div>
-                    <form>
+                    <form wire:submit.prevent ="CreateAppointments" id="AddAppointment">
                           <div class="form-group">
                            <div class="form-row">
                                <div class="col-lg-6">
-                            <label class="my-1 mr-2" for="SelectClients">
-                                <b>Clients</b>
-                            </label>
-                            <select class="custom-select my-1 mr-sm-2" id="SelectClients">
-                              <option selected>Choose...</option>
-                              @foreach ($users as $user)
-                              <option value="{{$user->id}}">{{$user->name}}</option>
-                              @endforeach
-                            </select>
+                                <label for="client">Client:</label>
+                                <select wire:model.defer="state.client_id" class="form-control @error('client_id') is-invalid @enderror">
+                                    <option value="">Select Client</option>
+                                    @foreach($clients as $client)
+                                    <option value="{{ $client->id }}">{{ $client->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('client_id')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                              </div>
                            </div>
                           </div>
                           <div class="container">
                             <div class="row">
-                                <div class="col-sm-6 col-lg-6">
-                                    <label for="AppointmentDate">Apoointment Date</label>
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <div class="input-group date" id="AppointmentDate" data-target-input="nearest">
-                                            <input type="text" class="form-control datetimepicker-input" data-target="#AppointmentDate"/>
-                                            <div class="input-group-append" data-target="#AppointmentDate" data-toggle="datetimepicker">
-                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        <label for="appointmentDate">Appointment Date</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                                             </div>
+                                            <x-datepicker wire:model.defer="state.date" id="appointmentDate" :error="'date'" />
+                                            @error('date')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-6 col-lg-6">
-                                    <label for="AppointmentDate">Apoointment Time</label>
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <div class="input-group date" id="AppointmentTime" data-target-input="nearest">
-                                            <input type="text" class="form-control datetimepicker-input" data-target="#AppointmentTime"/>
-                                            <div class="input-group-append" data-target="#AppointmentTime" data-toggle="datetimepicker">
-                                                <div class="input-group-text"><i class="fa fa-clock"></i></div>
+                                        <label for="appointmentTime">Appointment Time</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-clock"></i></span>
                                             </div>
+                                            <x-timepicker wire:model.defer="state.time" id="appointmentTime" :error="'time'" />
+                                            @error('time')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
                             </div>
                           </div>
-                        <div class="form-group my-1 mr-2">
-                                <label for="AppointmentNote">Note:</label>
-                                <textarea class="form-control" id="AppointmentNote" rows="3"></textarea>
+                        <div wire:ignore class="form-group my-1 mr-2">
+                                <label for="note">Note:</label>
+                                <textarea id="note" wire:model.defer='state.text' data-note="@this" class="form-control" rows="3"></textarea>
                         </div>
-                          <button type="submit" class="btn btn-primary">Save</button>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="client">Status:</label>
+                                    <select wire:model.defer="state.status" class="form-control @error('status') is-invalid @enderror">
+                                        <option value="">Select Status</option>
+                                        <option value="SCHEDULED">Scheduled</option>
+                                        <option value="CLOSED">Closed</option>
+                                    </select>
+                                    @error('status')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submitBtn">
+                        <button id="save" type="submit" class="btn btn-primary">Save</button>
+                    </div>
                       </form>
                 </div>
               </div>
@@ -83,4 +116,21 @@
         </div><!-- /.container-fluid -->
       </div>
       <!-- /.content -->
+      @push('js')
+      <script>
+        $(document).ready(function(){
+        ClassicEditor
+            .create( document.querySelector('#note' ) )
+            .then( editor => {
+                document.querySelector('#save').addEventListener('click',()=>{
+                let note = $('#note').data('note');
+                eval(note).set('state.text',editor.getData());
+            });
+            })
+            .catch( error => {
+                    console.error( error );
+            } );
+    })
+      </script>
+      @endpush
 </div>

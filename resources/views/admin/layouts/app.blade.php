@@ -81,6 +81,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{{asset('backend/plugins/toastr/toastr.min.js')}}"></script>
 <script src="{{asset('backend/plugins/tempusdominus-bootstrap-4/js/moment.js')}}"></script>
 <script src="{{asset('backend/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/12.3.1/classic/ckeditor.js"></script>
+
 
 <script>
     // add new User
@@ -108,15 +110,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
         $('#deleteConfirmatinForm').modal('hide');
         toastr.success(event.detail.message,'Success!');
     })
-    $(document).ready(function(){
-        $('#AppointmentDate').datetimepicker({
-            format:'L',
-        });
-        $('#AppointmentTime').datetimepicker({
-            format: 'LT',
-        });
+
+    window.addEventListener('Appointment-saved',event=>{
+        // $('#deleteConfirmatinForm').modal('hide');
+        toastr.success(event.detail.message,'Success!');
+        $("#AddAppointment").trigger("reset");
+
+
     })
 </script>
+@stack('js')
 @livewireScripts
 </body>
 </html>
