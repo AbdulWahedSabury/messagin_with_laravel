@@ -7,7 +7,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Starter</title>
+  <title>Laravel+Livewire</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -33,7 +33,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
       <img src="{{asset('backend/dist/img/AdminLTELogo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+      <span class="brand-text font-weight-light">Laravel+Livewire</span>
     </a>
 
     <!-- Sidebar -->
@@ -78,10 +78,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- AdminLTE App -->
 <script src="{{asset('backend/dist/js/adminlte.min.js')}}"></script>
 <!-- AdminLTE App -->
+<script src="{{asset('backend/plugins/sweetAlert/dist/sweetalert2.all.min.js')}}"></script>
 <script src="{{asset('backend/plugins/toastr/toastr.min.js')}}"></script>
 <script src="{{asset('backend/plugins/tempusdominus-bootstrap-4/js/moment.js')}}"></script>
 <script src="{{asset('backend/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script>
+<script src="{{asset('backend/plugins/alpine.js/alpine.js')}}"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/12.3.1/classic/ckeditor.js"></script>
+
 
 
 <script>
@@ -115,10 +118,30 @@ scratch. This page gets rid of all links and provides the needed markup only.
         // $('#deleteConfirmatinForm').modal('hide');
         toastr.success(event.detail.message,'Success!');
         $("#AddAppointment").trigger("reset");
+})
 
-
+    window.addEventListener('Appointment-delete',event =>{
+        Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+        if (result.isConfirmed) {
+            Livewire.emit('deleteConfirmed')
+        }
+        })
     })
+    window.addEventListener('role_changed',event=>{
+        // $('#deleteConfirmatinForm').modal('hide');
+        toastr.success(event.detail.message,'Success!');
+})
+
 </script>
+@stack('styles')
 @stack('js')
 @livewireScripts
 </body>

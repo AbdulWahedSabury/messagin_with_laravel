@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -21,7 +22,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'avatar',
+        'role'
     ];
+    public $ROLE_ADMIN = 'admin';
+    public $ROLE_USER = "user";
 
     /**
      * The attributes that should be hidden for serialization.
@@ -44,4 +49,22 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    protected $appends=[
+        'avatar_url',
+    ];
+    public function getAvatarUrlAttribute()
+    {
+        if($this->avatar){
+            return asset('storage/avatars/'.$this->avatar);
+        }else{
+            return asset('deafult.png');
+        }
+    }
+    public function isAdmin()
+    {
+        if($this->role != $this->ROLE_ADMIN){
+            return false;
+        }
+        return true;
+    }
 }

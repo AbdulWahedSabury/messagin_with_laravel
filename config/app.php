@@ -166,6 +166,7 @@ return [
         /*
          * Package Service Providers...
          */
+        App\providers\FortifyServiceProvider::class,
 
         /*
          * Application Service Providers...

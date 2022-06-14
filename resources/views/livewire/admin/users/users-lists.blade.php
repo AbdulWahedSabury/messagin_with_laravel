@@ -3,12 +3,12 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0">Dashboard</h1>
+              <h1 class="m-0">Users</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active">Dashboard</li>
+                <li class="breadcrumb-item active">Users</li>
               </ol>
             </div><!-- /.col -->
           </div><!-- /.row -->
@@ -19,11 +19,12 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-lg-12">
-                <div class="d-flex justify-content-end mb-2">
+                <div class="d-flex justify-content-between mb-2">
                     <button wire:click.prevent="AddNewUser"  class="bt btn-primary">
                         <i class="fa fa-plus-circle"></i>
                         Add new user
                     </button>
+                    <x-searchForm wire:model='searchTerm' />
                 </div>
               <div class="card">
                 <div class="card-body">
@@ -34,16 +35,32 @@
                         <th scope="col">Number</th>
                         <th scope="col">Full name</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Role</th>
                         <th scope="col">Oprations</th>
                       </tr>
                     </thead>
                     <tbody>
                         <?php $counter = 1; ?>
-                        @foreach ($users as $user)
+                        @forelse ($users as $user)
                         <tr>
                             <th scope="row">{{$counter}}</th>
-                            <td>{{$user->name}}</td>
+                            <td>
+                               @if ($user->avatar)
+                               <img src="{{ asset('storage/avatars/'.$user->avatar); }}" style="width: 50px;" class="img img-circle mr-1" alt="">
+                               @else
+                               <img src="{{ asset('deafult.png'); }}" style="width: 50px;" class="img img-circle mr-1" alt="">
+                               @endif
+                                <span>
+                                {{$user->name}}
+                                </span>
+                            </td>
                             <td>{{$user->email}}</td>
+                            <td>
+                                <select class="form-control" wire:change="changeRole({{ $user }}, $event.target.value)">
+                                    <option value="admin" {{ ($user->role === 'admin') ? 'selected' : '' }}>ADMIN</option>
+                                    <option value="user" {{ ($user->role === 'user') ? 'selected' : '' }}>USER</option>
+                                </select>
+                            </td>
                             <td>
                                 <a href="" wire:click.prevent ="editUser({{$user}})">
                                     <i class="fa fa-edit mr-2"></i>
@@ -54,7 +71,18 @@
                             </td>
                           </tr>
                           <?php $counter += 1; ?>
-                        @endforeach
+                          @empty
+                          <tr>
+                              <td colspan="4">
+                                <div class="d-flex justify-content-center">
+                                    <img src="" alt="Not found">
+                                    <p>
+                                        Not found!
+                                    </p>
+                                </div>
+                              </td>
+                          </tr>
+                        @endforelse
                     </tbody>
                   </table>
                 </div>
@@ -163,6 +191,34 @@
                     name="password_confirmation"
                     wire:model.defer = "state.password_confirmation">
                 </div>
+
+                <div class="form-group">
+                    <label for="customFile">Profile Photo</label>
+                    <div class="custom-file">
+                        <div x-data="{ isUploading: false, progress: 5 }" x-on:livewire-upload-start="isUploading = true" x-on:livewire-upload-finish="isUploading = false; progress = 5" x-on:livewire-upload-error="isUploading = false" x-on:livewire-upload-progress="progress = $event.detail.progress">
+                            <input wire:model="photo" type="file" class="custom-file-input" id="customFile">
+                            <div x-show.transition="isUploading" class="progress progress-sm mt-2 rounded">
+                                <div class="progress-bar bg-primary progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" x-bind:style="`width: ${progress}%`">
+                                    <span class="sr-only">40% Complete (success)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <label class="custom-file-label" for="customFile">
+                            @if ($photo)
+                            {{ $photo->getClientOriginalName() }}
+                            @else
+                            Choose Image
+                            @endif
+                        </label>
+                    </div>
+
+                    @if ($photo)
+                    <img src="{{ $photo->temporaryUrl() }}" class="img d-block mt-2 w-100 rounded">
+                    @else
+                    <img src="{{ $state['avatar_url'] ?? '' }}" class="img d-block mb-2 w-100 rounded">
+                    @endif
+                </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancle</button>
