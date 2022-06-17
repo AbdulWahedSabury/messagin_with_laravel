@@ -18,6 +18,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   {{-- toastr file --}}
   <link rel="stylesheet" href="{{asset('backend/plugins/toastr/toastr.min.css')}}">
   <link rel="stylesheet" href="{{asset('backend/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css')}}">
+<!-- Bootstrap Color Picker -->
+<link rel="stylesheet" href="{{ asset('backend/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css') }}">
 
   @livewireStyles
 </head>
@@ -84,6 +86,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{{asset('backend/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script>
 <script src="{{asset('backend/plugins/alpine.js/alpine.js')}}"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/12.3.1/classic/ckeditor.js"></script>
+<!-- bootstrap color picker -->
+<script src="{{ asset('backend/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js') }}"></script>
 
 
 

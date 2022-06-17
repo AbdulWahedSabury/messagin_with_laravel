@@ -25,6 +25,8 @@ class AppointmentsCreate extends Component
 				'date' => 'required',
 				'time' => 'required',
 				'note' => 'nullable',
+                'color'=>'required',
+                'members'=>'nullable',
 				'status' => 'required|in:SCHEDULED,CLOSED',
 			],
 			[

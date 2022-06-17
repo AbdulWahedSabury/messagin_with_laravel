@@ -44,6 +44,22 @@
                                 </div>
                                 @enderror
                              </div>
+
+                             <div class="col-md-6">
+                                <div wire:ignore class="form-group">
+                                    <label>Select Team Members</label>
+                                    <x-select2 wire:model="state.members" id="members" placeholder="Select Members">
+                                        <option>One</option>
+                                        <option>Alaska</option>
+                                        <option>California</option>
+                                        <option>Delaware</option>
+                                        <option>Tennessee</option>
+                                        <option>Texas</option>
+                                        <option>Washington</option>
+                                    </x-select2>
+                                </div>
+                            </div>
+
                            </div>
                           </div>
                           <div class="container">

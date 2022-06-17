@@ -27,7 +27,7 @@
                     <div class="title">
                         <h5>Add New Appointment</h5>
                     </div>
-                    <form wire:submit.prevent ="CreateAppointments" id="AddAppointment">
+                    <form wire:submit.prevent ="CreateAppointments" id="AddAppointment"  autocomplete="off">
                           <div class="form-group">
                            <div class="form-row">
                                <div class="col-lg-6">
@@ -48,6 +48,32 @@
                           </div>
                           <div class="container">
                             <div class="row">
+                                <div class="col-md-6">
+                                    <!-- Color Picker -->
+                                    <!-- <div class="form-group" wire:ignore.self>
+                                        <label>Color picker:</label>
+                                        <input wire:model.defer="state.color" type="text" class="form-control @error('color') is-invalid @enderror" id="colorPicker">
+                                        @error('color')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
+                                    </div> -->
+                                    <div class="form-group">
+                                        <label>Color picker with addon:</label>
+
+                                        <div class="input-group" id="colorPicker">
+                                            <input type="text" name="color" class="form-control">
+
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"><i class="fas fa-square"></i></span>
+                                            </div>
+                                        </div>
+                                        <!-- /.input group -->
+                                    </div>
+                                </div>
+
+
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="appointmentDate">Appointment Date</label>
@@ -102,12 +128,35 @@
                                     @enderror
                                 </div>
                             </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Select Team Members</label>
+                                    <div class="@error('members') is-invalid border border-danger rounded custom-error @enderror">
+                                        <x-select2 wire:model="state.members" id="members" placeholder="Select Members">
+                                            <option>One</option>
+                                            <option>Alaska</option>
+                                            <option>California</option>
+                                            <option>Delaware</option>
+                                            <option>Tennessee</option>
+                                            <option>Texas</option>
+                                            <option>Washington</option>
+                                        </x-select2>
+                                    </div>
+                                    @error('members')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                     <div class="submitBtn">
                         <button id="save" type="submit" class="btn btn-primary">Save</button>
                     </div>
-                      </form>
+                </form>
                 </div>
               </div>
             <!-- /.col-md-6 -->
@@ -116,21 +165,6 @@
         </div><!-- /.container-fluid -->
       </div>
       <!-- /.content -->
-      @push('js')
-      <script>
-        $(document).ready(function(){
-        ClassicEditor
-            .create( document.querySelector('#note' ) )
-            .then( editor => {
-                document.querySelector('#save').addEventListener('click',()=>{
-                let note = $('#note').data('note');
-                eval(note).set('state.text',editor.getData());
-            });
-            })
-            .catch( error => {
-                    console.error( error );
-            } );
-    })
-      </script>
-      @endpush
 </div>
+    @include('livewire/admin/appointments/appointment-css')
+    @include('livewire/admin/appointments/appointment-js')

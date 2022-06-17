@@ -3,6 +3,8 @@
 namespace App\Http\Livewire\Admin\Appointments;
 use App\Http\Livewire\Admin\AdminAppointments\AdminAppointments;
 use App\Models\appointments;
+use App\Exports\AppointmentsExport;
+use Maatwebsite\Excel\Facades\Excel;
 class ListAppointments extends AdminAppointments
 {
     public $appointmentIdToDelete;
@@ -95,5 +97,9 @@ class ListAppointments extends AdminAppointments
             $this->dispatchBrowserEvent('Appointment-saved', ['updated' => 'All selected appointment got deleted.']);
 
             $this->reset(['selectPageRows', 'selectedRows']);
+        }
+        public function export()
+        {
+            return (new AppointmentsExport($this->selectedRows))->download('appointments.xls');
         }
 }

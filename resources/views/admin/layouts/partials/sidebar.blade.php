@@ -2,7 +2,7 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{auth()->user()->avatar_url}}" class="img-circle elevation-2" alt="User Image">
+          <img id="profileImage" src="{{auth()->user()->avatar_url}}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="#" class="d-block">{{ auth()->user()->name }}</a>
@@ -54,6 +54,24 @@
               </p>
             </a>
           </li>
+        <!-- profile -->
+        <li class="nav-item">
+            <a href="{{route('admin.profile.edit')}}" class="nav-link {{request()->is('admin/profile/edit')? 'active' : ''}}">
+                <i class="nav-icon fas fa-user"></i>
+                <p>
+                Users
+                </p>
+            </a>
+            </li>
+        {{-- setting --}}
+        <li class="nav-item">
+            <a href="{{route('admin.site.setting')}}" class="nav-link {{request()->is('admin/site/setting')? 'active' : ''}}">
+                <i class="nav-icon fas fa-cog"></i>
+                <p>
+                Setting
+                </p>
+            </a>
+            </li>
           {{-- Log out --}}
 
           <li class="nav-item">
