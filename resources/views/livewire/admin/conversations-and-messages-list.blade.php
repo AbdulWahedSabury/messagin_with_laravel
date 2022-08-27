@@ -3,17 +3,17 @@
     <div class="col-md-4">
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Contacts</h3>
+          <h3 class="card-title">Users</h3>
         </div>
         <div class="card-body">
           <ul class="contacts-list">
             @foreach ($conversations as $conversation)
               <li>
-                <a href="#">
-                  <img class="contacts-list-img" src="{{ $conversation->receiver->avatar_url }}" alt="User Avatar">
+                <a href="#" wire:click.prevent='messages({{ $conversation->id }})'>
+                  <img class="contacts-list-img" src="{{ $conversation->sender->avatar_url }}" alt="User Avatar">
                   <div class="contacts-list-info">
                     <span class="contacts-list-name text-dark">
-                      {{ $conversation->receiver->name }}
+                      {{ $conversation->sender->name }}
                       <small class="float-right contacts-list-date text-muted">
                         {{ $conversation->message->last()->created_at->format('y/m/d') }}
                       </small>
@@ -39,7 +39,7 @@
         <div class="card-header">
           <h3 class="card-title">Chat with
             <span>
-              Rossie Hoeger
+              {{ $selectedConversation->sender->name }}
             </span>
           </h3>
         </div>
