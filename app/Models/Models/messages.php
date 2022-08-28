@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class messages extends Model
 {
     use HasFactory;
-
+    protected $guarded=[];
     public function conversation()
     {
         return $this->belongsTo(conversations::class);

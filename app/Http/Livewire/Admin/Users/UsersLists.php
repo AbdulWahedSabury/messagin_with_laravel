@@ -7,6 +7,7 @@ use Hash;
 use Livewire\withFileUploads;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Livewire\Admin\AdminAppointments\AdminAppointments;
+use App\Models\Models\conversations;
 use Illuminate\Validation\Rule;
 class UsersLists extends AdminAppointments
 {
@@ -112,4 +113,12 @@ class UsersLists extends AdminAppointments
 
 		$this->dispatchBrowserEvent('role_changed', ['message' => "Role changed to {$role} successfully."]);
 	}
+    public function startConversation($userId)
+    {
+        $conversation = conversations::firstOrCreate([
+            'sender_id' => auth()->user()->id,
+            'receiver_id' => $userId
+        ]);
+        return redirect('admin/messages')->with('selectedConversation',$conversation);
+    }
 }

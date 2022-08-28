@@ -71,7 +71,7 @@
           class="nav-link {{ request()->is('admin/profile/edit') ? 'active' : '' }}">
           <i class="nav-icon fas fa-user"></i>
           <p>
-            Users
+            Profile
           </p>
         </a>
       </li>
